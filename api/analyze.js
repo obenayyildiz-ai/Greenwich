@@ -1,7 +1,6 @@
 import Anthropic from '@anthropic-ai/sdk';
 
 export default async function handler(req, res) {
-  // Autoriser uniquement POST
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
@@ -13,7 +12,6 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Prompt manquant' });
     }
 
-    // Vérifier que la clé API existe
     if (!process.env.ANTHROPIC_API_KEY) {
       console.error('ANTHROPIC_API_KEY non définie');
       return res.status(500).json({ 
