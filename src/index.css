@@ -31,9 +31,12 @@
 }
 
 *{ box-sizing:border-box; }
-html,body{ height:100%; }
+html,body{ 
+  height:100%; 
+  margin: 0;
+  padding: 0;
+}
 body{
-  margin:0;
   font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
   color: var(--text);
   background:
@@ -41,13 +44,16 @@ body{
     radial-gradient(1000px 700px at 80% 20%, rgba(79,70,229,.40), transparent 55%),
     radial-gradient(900px 600px at 50% 100%, rgba(239,68,68,.25), transparent 55%),
     linear-gradient(160deg, var(--bg0), var(--bg1) 45%, var(--bg2));
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 /* ---------- Helpers ---------- */
 .container{
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 24px;
+  min-height: 100vh;
 }
 
 .glass{
@@ -153,11 +159,13 @@ body{
   padding: 16px 18px;
   background: linear-gradient(90deg, rgba(79,70,229,.95), rgba(124,58,237,.95));
   border-bottom: 1px solid rgba(255,255,255,.15);
+  border-radius: var(--radius-xl) var(--radius-xl) 0 0;
 }
 
 .chatBody{
   flex:1;
-  overflow:auto;
+  overflow-y: auto;
+  overflow-x: hidden;
   padding: 16px;
   background:
     radial-gradient(900px 300px at 20% 10%, rgba(255,255,255,.06), transparent 55%),
@@ -179,6 +187,7 @@ body{
   font-size: 13.5px;
   line-height: 1.35;
   white-space: pre-wrap;
+  word-wrap: break-word;
 }
 
 .bubble.user{
@@ -222,6 +231,7 @@ body{
   border-top: 1px solid rgba(255,255,255,.10);
   background: rgba(0,0,0,.18);
   backdrop-filter: blur(10px);
+  border-radius: 0 0 var(--radius-xl) var(--radius-xl);
 }
 .composerRow{
   display:flex;
@@ -276,11 +286,22 @@ body{
 
 /* ---------- Right panel (report) ---------- */
 .report{
-  max-height: 700px;
-  overflow:auto;
+  max-height: none; /* ← CHANGEMENT 1: Enlever la limite de hauteur */
+  overflow-y: visible; /* ← CHANGEMENT 2: Pas de scroll caché */
+  overflow-x: hidden;
   display:flex;
   flex-direction:column;
   gap: 14px;
+  padding-bottom: 20px; /* ← CHANGEMENT 3: Ajouter du padding en bas */
+}
+
+/* ← CHANGEMENT 4: Ajout pour desktop avec scroll si nécessaire */
+@media (min-width: 1024px){
+  .report{
+    max-height: 700px;
+    overflow-y: auto;
+    padding-right: 10px;
+  }
 }
 
 .placeholder{
@@ -364,6 +385,7 @@ body{
   font-size: 11px;
   font-weight: 800;
   color:white;
+  white-space: nowrap;
 }
 .pill.red{ background: var(--danger); }
 .pill.orange{ background: var(--warn); }
@@ -393,6 +415,7 @@ body{
   display:flex;
   justify-content:space-between;
   gap:12px;
+  align-items: flex-start;
 }
 .alertActions{
   margin-top: 10px;
@@ -415,4 +438,38 @@ body{
 .chatBody::-webkit-scrollbar-track,
 .report::-webkit-scrollbar-track{
   background: rgba(255,255,255,.05);
+}
+
+/* ← CHANGEMENT 5: Responsive amélioré */
+@media (max-width: 1023px) {
+  .chatPanel{
+    height: 500px;
+  }
+  
+  .report{
+    max-height: none;
+    overflow-y: visible;
+  }
+  
+  .summaryGrid{
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .container{
+    padding: 16px;
+  }
+  
+  .hero{
+    padding: 20px;
+  }
+  
+  .hero h1{
+    font-size: 24px;
+  }
+  
+  .chatPanel{
+    height: 400px;
+  }
 }
