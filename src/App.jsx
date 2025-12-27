@@ -18,6 +18,7 @@ const FreeTextAnalyzer = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  // ✅ CORRECTION : Fonction ASYNC
   const analyzeData = async () => {
     if (!input.trim() || loading) return;
 
